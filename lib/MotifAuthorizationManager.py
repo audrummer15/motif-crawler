@@ -3,6 +3,7 @@ from StringIO import StringIO
 
 import pycurl
 from bs4 import BeautifulSoup
+from RequestHandler import RequestHandler
 
 class MotifAuthorizationManager(object):
     URL_AUTH_STEP1 = "https://auth.motifinvesting.com/authenticate"
@@ -44,6 +45,8 @@ class MotifAuthorizationManager(object):
                 raise ValueError("MotifAuthorizationManager.__init__:  cookieJar must be a string.")
         else:
             self.cookieJar = cookieJar
+
+        self.rh = RequestHandler(self.cookieJar)
 
 
 
@@ -94,6 +97,9 @@ class MotifAuthorizationManager(object):
         if cookieJar != None:
             if isinstance(cookieJar, str):
                 self.cookieJar = cookieJar
+                self.rh.setCookieJar(self.cookieJar)
+
+                return True
             else:
                 raise ValueError("MotifAuthorizationManager.setCookieJar:  cookieJar must be a string.")
         else:
@@ -177,16 +183,7 @@ class MotifAuthorizationManager(object):
             raise ValueError("MotifAuthorizationManager.authorizeUser:  Step 3 Failed With \"" + str(e) + "\"" )
 
     def isUserAuthorized(self):
-        buf = StringIO()
-        c = pycurl.Curl()
-        c.setopt(c.URL, self.URL_SETTINGS)
-        c.setopt(pycurl.COOKIEJAR, self.cookieJar)
-        c.setopt(pycurl.COOKIEFILE, self.cookieJar)
-        c.setopt(pycurl.WRITEFUNCTION, buf.write)
-        c.perform()
-
-        statusCode = int(c.getinfo(pycurl.HTTP_CODE))
-        c.close()
+        statusCode = self.rh.gethtml(self.URL_SETTINGS)[0]
 
         if statusCode >= 200 and statusCode < 300:
             return True
