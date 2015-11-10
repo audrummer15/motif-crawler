@@ -20,8 +20,8 @@ class RequestHandler(object):
         self.c.setopt(pycurl.COOKIEFILE, self.cookieJar)
         self.c.setopt(pycurl.ENCODING, 'gzip,deflate')
         self.c.setopt(pycurl.USERAGENT, self.USER_AGENT)
-        self.c.setopt(pycurl.CONNECTTIMEOUT, 10)
-        self.c.setopt(pycurl.TIMEOUT, 10)
+        self.c.setopt(pycurl.CONNECTTIMEOUT, 5)
+        self.c.setopt(pycurl.TIMEOUT, 20)
 
 
     def __curl_callback(self, buf):

@@ -7,7 +7,7 @@ from RequestHandler import RequestHandler
 
 class MotifAuthorizationManager(object):
     URL_AUTH_STEP1 = "https://auth.motifinvesting.com/authenticate"
-    URL_AUTH_STEP2 = "https://trader.motifinvesting.com/two-factor-auth?next=%2F5jt2aa7b%2Fhome"
+    URL_AUTH_STEP2 = "https://trader.motifinvesting.com/two-factor-auth"
     URL_AUTH_STEP3 = "https://trader.motifinvesting.com/two-factor-auth/send"
     URL_AUTH_STEP4 = "https://trader.motifinvesting.com/two-factor-auth/confirm"
     URL_SETTINGS = "https://trader.motifinvesting.com/account/settings"
@@ -159,7 +159,7 @@ class MotifAuthorizationManager(object):
                 "-H", "X-Motif-Nonce: " + nonce + "",
                 "-H", "X-FirePHP-Version: 0.0.6",
                 "-A", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
-                "-e", "https://trader.motifinvesting.com/two-factor-auth?auth=1&next=%2Fhome",
+                "-e", "https://trader.motifinvesting.com/two-factor-auth",
                 "--data-raw", "phoneNumber=" + self.phone + "&authType=text&Nonce=" + nonce + "&Page=TWO_FACTOR_AUTH",
                 self.URL_AUTH_STEP3])
         except Exception, e:
@@ -176,7 +176,7 @@ class MotifAuthorizationManager(object):
                 "-H", "X-Motif-Nonce: " + nonce + "",
                 "-H", "X-FirePHP-Version: 0.0.6",
                 "-A", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
-                "-e", "https://trader.motifinvesting.com/two-factor-auth?auth=1&next=%2Fhome",
+                "-e", "https://trader.motifinvesting.com/two-factor-auth",
                 "--data-raw", "confirmCode=" + pin + "&Nonce=" + nonce + "&Page=TWO_FACTOR_AUTH",
                 self.URL_AUTH_STEP4])
         except Exception, e:
