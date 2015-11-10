@@ -111,10 +111,7 @@ class MotifAuthorizationManager(object):
                 "-b", self.cookieJar,
                 self.URL_AUTH_STEP2])
 
-            f = open('nonce.html', 'w')
             soup = BeautifulSoup(curlOut, "html.parser")
-            f.write(curlOut)
-            f.close()
             nonce = self._getNonceFromSoup(soup)
         except Exception, e:
             raise ValueError("MotifAuthorizationManager.authorizeUser:  Step 2 Failed With \"" + str(e) + "\"" )
