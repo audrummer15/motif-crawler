@@ -8,7 +8,7 @@ To load dependencies used for this project, run the following:
 cd motif-crawler
 pip install --user pycurl
 pip install --user beautifulsoup4
-mv config/settings.sample.cfg config/settings.cfg
+cp config/settings.sample.cfg config/settings.cfg
 vim config/settings.cfg
 ```
 
