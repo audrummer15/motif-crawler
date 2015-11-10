@@ -57,3 +57,6 @@ target/
 
 # Run
 build/
+
+# Settings
+config/settings.cfg

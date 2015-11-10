@@ -7,14 +7,13 @@ from bs4 import SoupStrainer
 
 from lib.MotifAuthorizationManager import MotifAuthorizationManager
 from lib.RequestHandler import RequestHandler
+from lib.SettingsManager import SettingsManager
 
-COOKIEJAR = "cookies.txt"
+COOKIEJAR = os.path.join("build", "cookie.txt")
 
-mam = MotifAuthorizationManager()
+sm = SettingsManager()
+mam = MotifAuthorizationManager(sm.getEmail(), sm.getPassword(), COOKIEJAR)
 if not mam.isUserAuthorized():
-    mam.setUsername(str(raw_input("Enter Motif Username: ")))
-    mam.setPassword(str(raw_input("Enter Motif Password: ")))
-    mam.setCookieJar(COOKIEJAR)
     mam.authorizeUser()
 else:
     print "User Authorized"

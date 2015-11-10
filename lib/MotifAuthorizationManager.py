@@ -155,11 +155,12 @@ class MotifAuthorizationManager(object):
             raise ValueError("MotifAuthorizationManager.authorizeUser:  Step 3 Failed With \"" + str(e) + "\"" )
 
     def isUserAuthorized(self):
+        buf = StringIO()
         c = pycurl.Curl()
         c.setopt(c.URL, self.URL_SETTINGS)
         c.setopt(pycurl.COOKIEJAR, self.cookieJar)
         c.setopt(pycurl.COOKIEFILE, self.cookieJar)
-        c.setopt(pycurl.WRITEFUNCTION, '/dev/null')
+        c.setopt(pycurl.WRITEFUNCTION, buf.write)
         c.perform()
 
         statusCode = int(c.getinfo(pycurl.HTTP_CODE))
