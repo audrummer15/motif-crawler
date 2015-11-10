@@ -1,3 +1,4 @@
+import os
 import subprocess
 from StringIO import StringIO
 
@@ -40,6 +41,7 @@ class MotifAuthorizationManager(object):
 
         if cookieJar != "cookies.txt":
             if isinstance(cookieJar, str):
+                self.__ensurePathExists(cookieJar)
                 self.cookieJar = cookieJar
             else:
                 raise ValueError("MotifAuthorizationManager.__init__:  cookieJar must be a string.")
@@ -96,6 +98,7 @@ class MotifAuthorizationManager(object):
     def setCookieJar(self, cookieJar=None):
         if cookieJar != None:
             if isinstance(cookieJar, str):
+                self.__ensurePathExists(cookieJar)
                 self.cookieJar = cookieJar
                 self.rh.setCookieJar(self.cookieJar)
 
@@ -112,7 +115,14 @@ class MotifAuthorizationManager(object):
 
 
 
-    def _getNonceFromSoup(self, soup):
+    def __ensurePathExists(self, path):
+        truePath = os.path.dirname(path)
+        if not os.path.exists(truePath):
+            os.makedirs(truePath)
+
+
+
+    def __getNonceFromSoup(self, soup):
         scriptResults = soup('script',{'type' : 'text/javascript'})
 
         for line in scriptResults:
@@ -142,7 +152,7 @@ class MotifAuthorizationManager(object):
                 self.URL_AUTH_STEP2])
 
             soup = BeautifulSoup(curlOut, "html.parser")
-            nonce = self._getNonceFromSoup(soup)
+            nonce = self.__getNonceFromSoup(soup)
         except Exception, e:
             raise ValueError("MotifAuthorizationManager.authorizeUser:  Step 2 Failed With \"" + str(e) + "\"" )
 
