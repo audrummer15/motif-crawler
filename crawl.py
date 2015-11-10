@@ -9,10 +9,10 @@ from lib.MotifAuthorizationManager import MotifAuthorizationManager
 from lib.RequestHandler import RequestHandler
 from lib.SettingsManager import SettingsManager
 
-COOKIEJAR = os.path.join("build", "cookie.txt")
+COOKIEJAR = os.path.join("build", "cookies.txt")
 
 sm = SettingsManager()
-mam = MotifAuthorizationManager(sm.getEmail(), sm.getPassword(), COOKIEJAR)
+mam = MotifAuthorizationManager(sm.getEmail(), sm.getPassword(), sm.getPhone(), COOKIEJAR)
 if not mam.isUserAuthorized():
     mam.authorizeUser()
 else:

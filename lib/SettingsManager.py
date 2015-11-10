@@ -6,6 +6,7 @@ class SettingsManager(object):
     SECTION_CREDENTIALS = "Credentials"
     SETTING_EMAIL = "Email"
     SETTING_PASSWORD = "Password"
+    SETTING_PHONE = "Phone"
 
     def __init__(self):
         self.cp = ConfigParser.ConfigParser()
@@ -17,3 +18,7 @@ class SettingsManager(object):
     def getPassword(self):
         self.cp.read(self.SETTINGS_FILE)
         return self.cp.get(self.SECTION_CREDENTIALS, self.SETTING_PASSWORD)
+
+    def getPhone(self):
+        self.cp.read(self.SETTINGS_FILE)
+        return self.cp.get(self.SECTION_CREDENTIALS, self.SETTING_PHONE)

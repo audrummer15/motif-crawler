@@ -12,7 +12,7 @@ class MotifAuthorizationManager(object):
     URL_SETTINGS = "https://trader.motifinvesting.com/account/settings"
 
 
-    def __init__(self, username=None, password=None, cookieJar="cookies.txt"):
+    def __init__(self, username=None, password=None, phone=None, cookieJar="cookies.txt"):
         if username != None:
             if isinstance(username, str):
                 self.username = username
@@ -28,6 +28,14 @@ class MotifAuthorizationManager(object):
                 raise ValueError("MotifAuthorizationManager.__init__:  Password must be a string.")
         else:
             self.password = ""
+
+        if phone != None:
+            if isinstance(phone, str):
+                self.phone = phone
+            else:
+                raise ValueError("MotifAuthorizationManager.__init__:  Phone must be a string.")
+        else:
+            self.phone = ""
 
         if cookieJar != "cookies.txt":
             if isinstance(cookieJar, str):
@@ -63,6 +71,22 @@ class MotifAuthorizationManager(object):
                 raise ValueError("MotifAuthorizationManager.setPassword:  Password must be a string.")
         else:
             raise ValueError("MotifAuthorizationManager.setPassword:  Password not optional.")
+
+
+
+    def setPhone(self, phone=None):
+        if phone != None:
+            if isinstance(phone, str):
+                self.phone = phone
+            else:
+                raise ValueError("MotifAuthorizationManager.setPhone:  Phone must be a string.")
+        else:
+            raise ValueError("MotifAuthorizationManager.setPhone:  Phone not optional.")
+
+
+
+    def getPhone(self):
+        return self.phone
 
 
 
@@ -126,12 +150,11 @@ class MotifAuthorizationManager(object):
                 "-H", "X-Motif-Page: TWO_FACTOR_AUTH",
                 "-H", "Origin: https://trader.motifinvesting.com",
                 "-H", "X-Requested-With: XMLHttpRequest",
-                "-H", "X-DevTools-Emulate-Network-Conditions-Client-Id: DF415D61-974B-4630-BFE2-319AE7806362",
                 "-H", "X-Motif-Nonce: " + nonce + "",
                 "-H", "X-FirePHP-Version: 0.0.6",
                 "-A", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
                 "-e", "https://trader.motifinvesting.com/two-factor-auth?auth=1&next=%2Fhome",
-                "--data-raw", "phoneNumber=(xxx)+xxx-x003&authType=text&Nonce=" + nonce + "&Page=TWO_FACTOR_AUTH",
+                "--data-raw", "phoneNumber=" + self.phone + "&authType=text&Nonce=" + nonce + "&Page=TWO_FACTOR_AUTH",
                 self.URL_AUTH_STEP3])
         except Exception, e:
             raise ValueError("MotifAuthorizationManager.authorizeUser:  Step 3 Failed With \"" + str(e) + "\"" )
@@ -144,7 +167,6 @@ class MotifAuthorizationManager(object):
                 "-H", "X-Motif-Page: TWO_FACTOR_AUTH",
                 "-H", "Origin: https://trader.motifinvesting.com",
                 "-H", "X-Requested-With: XMLHttpRequest",
-                "-H", "X-DevTools-Emulate-Network-Conditions-Client-Id: DF415D61-974B-4630-BFE2-319AE7806362",
                 "-H", "X-Motif-Nonce: " + nonce + "",
                 "-H", "X-FirePHP-Version: 0.0.6",
                 "-A", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
